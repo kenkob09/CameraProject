@@ -18,6 +18,8 @@ from sklearn.cluster import  KMeans
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 
+from visualisation import Visualisation # groupe visu module
+
 class model:
     def __init__(self):
         '''
@@ -69,6 +71,11 @@ class model:
 
         self.mod.fit(X, y)
         self.is_trained=True
+        
+        ### VISUALISATION
+        visualisator = Visualisation()
+        visualisator.plot(self.mod, (X,y), self.mod.predict(X))
+        ### ------------- ###
 
     def predict(self, X):
         '''
