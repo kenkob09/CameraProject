@@ -19,6 +19,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 
 from visualisation import Visualisation # groupe visu module
+from preprocessing import Preprocessing
 
 class model:
     def __init__(self):
@@ -56,6 +57,10 @@ class model:
         Use data_converter.convert_to_num() to convert to the category number format.
         For regression, labels are continuous values.
         '''
+		
+        preprocess = Preprocessing
+        X = preprocess.process(X)
+		
         # For multi-class problems, convert target to be scikit-learn compatible
         # into one column of a categorical variable
         y=self.convert_to_num(Y, verbose=False)     
