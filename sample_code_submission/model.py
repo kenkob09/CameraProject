@@ -58,8 +58,6 @@ class model:
         For regression, labels are continuous values.
         '''
 		
-        preprocess = Preprocessing
-        X = preprocess.process(X)
 		
         # For multi-class problems, convert target to be scikit-learn compatible
         # into one column of a categorical variable
@@ -77,10 +75,6 @@ class model:
         self.mod.fit(X, y)
         self.is_trained=True
         
-        ### VISUALISATION
-        visualisator = Visualisation()
-        visualisator.plot(self.mod, (X,y), self.mod.predict(X))
-        ### ------------- ###
 
     def predict(self, X):
         '''

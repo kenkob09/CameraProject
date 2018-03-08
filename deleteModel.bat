@@ -1,0 +1,1 @@
+del sample_code_submission/cifar10_model.pickle
