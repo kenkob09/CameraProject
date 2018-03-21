@@ -3,31 +3,23 @@ data preprocessing
 Communication methods:
 - process(data) : preprocess the data and returns a new data numpy array
 """
-
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 THRESHOLD = 4.2  # Feature variance threshold
 
-class Preprocessing(object):
+class PreProcessing():
 
+    def PCA_boit(self,data):
+        X_train_scaled = StandardScaler().fit_transform(data["X_train"])
+        pca = PCA(n_components=2)
+        training_features = pca.fit_transform(X_train_scaled)
 	def __init__(self):
 		pass
-
 	def process(self, data):
-		"""
-		The data is preprocessed and useless features are erased.
-		Returns the new array composed of only useful features for each
-		data.
-		"""
-
-		global THRESHOLD
-
-		data.data = self.keepOnlyFeatures(data.data, THRESHOLD)
-
-		print("number of features deleted : {}".format(256 - len(data.data["X_train"][0])))
-
-		return data
-
+	    PCA_boi(self,data)
+        
 	def calculateVariance(self, data):
 		"""
 		Returns a list (u_1, u_2, ..., u_n) representing the variance
@@ -96,4 +88,6 @@ class Preprocessing(object):
 				toDelete.append(index)
 			index += 1
 
-		return toDelete
+        return toDelete
+
+
