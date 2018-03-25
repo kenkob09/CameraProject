@@ -1,93 +1,51 @@
-"""
-data preprocessing
-Communication methods:
-- process(data) : preprocess the data and returns a new data numpy array
-"""
+from sklearn.base import BaseEstimator
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
-import numpy as np
+try:
+    from sklearn.feature_selection import VarianceThreshold
+except:
+    pass  #ceci pour ne pas avoir une erreur d'importation pour moi
+from sklearn.pipeline import Pipeline
+from sys import argv, path
+from data_manager import DataManager
 
-THRESHOLD = 4.2  # Feature variance threshold
+#L'idee c'est d'utiliser PCA, ensuite VarianceThreshold, comme explique dans la proposition du projet.
 
-class PreProcessing():
+class Preprocess(BaseEstimator):
+    def __init__(self):
+        pca_boi = PCA(n_components=2)
+        filtering = VarianceThreshold(threshold = 4.0)
+        self.transformer = Pipeline([("first", pca_boi),("second", filtering)])
 
-    def PCA_boit(self,data):
-        X_train_scaled = StandardScaler().fit_transform(data["X_train"])
-        pca = PCA(n_components=2)
-        training_features = pca.fit_transform(X_train_scaled)
-	def __init__(self):
-		pass
-	def process(self, data):
-	    PCA_boi(self,data)
-        
-	def calculateVariance(self, data):
-		"""
-		Returns a list (u_1, u_2, ..., u_n) representing the variance
-		for each feature n
-		"""
+    def fit(self, X, y=None):
+        return self.transformer.fit(X,y)
+    
+    def fit_transform(self, X, y=None):
+        return self.transformer.fit_transform(X)
 
-		features = []
-		count = 0
+    def transform(self, X, y=None):
+        return self.transformer.transform(X)
 
-		# collect features vertically
-		for feature in range(len(data[0])) :
-			features.append([])
-			for d in data:
-				features[count].append(d[feature])
-			count += 1
+#Partie test :
 
-		features = np.array(features)
-		result = np.array([])
+if __name__=="__main__":
+    
+    if len(argv)==1: 
+        input_dir = "/anass_coding/Mini-Projet/sample_data" 
+        output_dir = "/anass_coding/Mini-Projet/results" 
+    else:
+        input_dir = argv[1]
+        output_dir = argv[2];
+    
+    basename = 'sample_data'
+    D = DataManager(basename, input_dir) # Load data
+    print("*** Before my sexy preprocessing***")
+    print D
+    
+    Prepro = Preprocess()
 
-
-		# variance
-		for feature in features:
-			result = np.append(result, feature.var())
-
-		return result
-
-
-	def keepOnlyFeatures(self, data, threshold):
-		"""
-		Suppresses features whose variance is below threshold.
-		Returns the new data array
-		"""
-
-		featureVariances = self.calculateVariance(data["X_train"])
-		toDelete = self.detectFeaturesToSupress(featureVariances, threshold)
-
-		print("Feature variance threshold : {}".format(threshold))
-		print("Features to delete : {}".format(toDelete))
-
-		newData = []
-
-		sets = ("X_train", "X_valid", "X_test")
-		for indexSet in range(3):
-			count = 0
-			for d in data[sets[indexSet]]:
-				newData.append([])
-				for i in range(len(d)):
-					if not i in toDelete:
-						newData[-1].append(d[i])
-				count += 1
-			newData = np.array(newData)
-			data[sets[indexSet]] = newData.copy()
-			newData = []
-
-		return data
-
-	def detectFeaturesToSupress(self, featureVariances, threshold):
-		"""
-		Returns the list of features whose variance is below threshold
-		"""
-
-		toDelete = []
-		index = 0
-		for var in featureVariances:
-			if var < threshold:
-				toDelete.append(index)
-			index += 1
-
-        return toDelete
-
-
+    D.data['X_train'] = Prepro.fit_transform(D.data['X_train'], D.data['Y_train'])
+    D.data['X_valid'] = Prepro.transform(D.data['X_valid'])
+    D.data['X_test'] = Prepro.transform(D.data['X_test'])
+  
+    print("*** Look at these handsome results aye ***")
+print D
