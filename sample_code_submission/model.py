@@ -25,14 +25,14 @@ class model:
     def __init__(self):
         '''
         This constructor is supposed to initialize data members.
-        Use triple quotes for function documentation. 
+        Use triple quotes for function documentation.
         '''
         self.num_train_samples=0
         self.num_feat=1
         self.num_labels=1
         self.is_trained=False
         self.mod = GaussianNB()
-    
+
     def define_model(self, name):
         if self.is_trained == False:
             if name == 'GaussianNB':
@@ -42,7 +42,7 @@ class model:
                 self.mod = GaussianNB()
         else:
             print("Model already load")
-        
+
     def fit(self, X, Y):
         '''
         This function should train the model parameters.
@@ -57,12 +57,12 @@ class model:
         Use data_converter.convert_to_num() to convert to the category number format.
         For regression, labels are continuous values.
         '''
-		
-		
+
+
         # For multi-class problems, convert target to be scikit-learn compatible
         # into one column of a categorical variable
-        y=self.convert_to_num(Y, verbose=False)     
-        
+        y=self.convert_to_num(Y, verbose=False)
+
         self.num_train_samples = X.shape[0]
         if X.ndim>1: self.num_feat = X.shape[1] # Does not work for sparse matrices
         print("FIT: dim(X)= [{:d}, {:d}]".format(self.num_train_samples, self.num_feat))
@@ -74,7 +74,10 @@ class model:
 
         self.mod.fit(X, y)
         self.is_trained=True
-        
+
+        # VISUALISATION
+        visu = Visualisation()
+        visu.plot(self.model, (X, Y), self.predict(X))
 
     def predict(self, X):
         '''
@@ -94,7 +97,7 @@ class model:
         if (self.num_feat != num_feat):
             print("ARRGH: number of features in X does not match training data!")
         print("PREDICT: dim(y)= [{:d}, {:d}]".format(num_test_samples, self.num_labels))
-        
+
         # Return predictions as class probabilities
         y = self.mod.predict_proba(X)
         return y
@@ -111,7 +114,7 @@ class model:
                 self = pickle.load(f)
             print("Model reloaded from: " + modelfile)
         return self
-        
+
     def convert_to_num(self, Ybin, verbose=True):
         ''' Convert binary targets to numeric vector (typically classification target values)'''
         if verbose: print("Converting to numeric vector")
@@ -121,4 +124,3 @@ class model:
         Ycont = np.dot(Ybin, classid)
         if verbose: print(Ycont)
         return Ycont
- 

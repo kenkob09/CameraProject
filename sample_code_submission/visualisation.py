@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 """
 model visualisation
 Communication methods:
@@ -18,6 +20,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.manifold import TSNE, Isomap
 from sklearn import preprocessing
 
+VISUALISATION_ON = False # active ou désactive la visualisation
+
 class Visualisation(object):
 
 	def __init__(self):
@@ -36,60 +40,64 @@ class Visualisation(object):
 
 		@param model : The chosen fit model
 		@param data : tuple (X, y)
-		@param predict : tuple (Y) 
+		@param predict : tuple (Y)
 		"""
 
-		x = data[0]
-		y = data[1]
-		y_pre = predict
+		global VISUALISATION_ON
 
-		print("TSNE dimension reduction plot")
-		
-		### TSNE sur dataset
-		
-		var_tsne = TSNE(n_components=2, 
-				    init='pca', perplexity=15).fit_transform(x)
-		
-		le = preprocessing.LabelEncoder()
-		le.fit(y)
-		y = le.transform(y)
-		plt.figure()
-		plt.scatter(var_tsne[:,0], var_tsne[:,1], c=np.array(y))
-		plt.title('Dataset - TSNE')
-		plt.show()
-		
-		### TSNE sur prediction
-		
-		le = preprocessing.LabelEncoder()
-		le.fit(y_pre)
-		y = le.transform(y_pre)
-		plt.figure()
-		plt.scatter(var_tsne[:,0], var_tsne[:,1], c=np.array(y_pre))
-		plt.title('Predictions sur set d\'entrainement - TSNE')
-		plt.show()
-		
-		print("Isomap dimension reduction plot")
-		
-		# Isomap sur dataset
-		
-		var_iso = Isomap(n_components=2).fit(x).fit_transform(x)
-		
-		le = preprocessing.LabelEncoder()
-		le.fit(y)
-		y = le.transform(y)
-		plt.figure()
-		plt.scatter(var_iso[:,0], var_iso[:,1], c=np.array(y))
-		plt.title('Dataset - Isomap')
-		plt.show()
-		
-		# Isomap sur predictions
-		
-		le = preprocessing.LabelEncoder()
-		le.fit(y_pre)
-		y = le.transform(y_pre)
-		plt.figure()
-		plt.scatter(var_iso[:,0], var_iso[:,1], c=np.array(y_pre))
-		plt.title('Predictions sur set d\'entrainement - Isomap')
-		plt.show()
+		if (VISUALISATION_ON):
+
+			x = data[0]
+			y = data[1]
+			y_pre = predict
+
+			print("TSNE dimension reduction plot")
+
+			### TSNE sur dataset
+
+			var_tsne = TSNE(n_components=2,
+					    init='pca', perplexity=15).fit_transform(x)
+
+			le = preprocessing.LabelEncoder()
+			le.fit(y)
+			y = le.transform(y)
+			plt.figure()
+			plt.scatter(var_tsne[:,0], var_tsne[:,1], c=np.array(y))
+			plt.title('Dataset - TSNE')
+			plt.show()
+
+			### TSNE sur prediction
+
+			le = preprocessing.LabelEncoder()
+			le.fit(y_pre)
+			y = le.transform(y_pre)
+			plt.figure()
+			plt.scatter(var_tsne[:,0], var_tsne[:,1], c=np.array(y_pre))
+			plt.title('Predictions sur set d\'entrainement - TSNE')
+			plt.show()
+
+			print("Isomap dimension reduction plot")
+
+			# Isomap sur dataset
+
+			var_iso = Isomap(n_components=2).fit(x).fit_transform(x)
+
+			le = preprocessing.LabelEncoder()
+			le.fit(y)
+			y = le.transform(y)
+			plt.figure()
+			plt.scatter(var_iso[:,0], var_iso[:,1], c=np.array(y))
+			plt.title('Dataset - Isomap')
+			plt.show()
+
+			# Isomap sur predictions
+
+			le = preprocessing.LabelEncoder()
+			le.fit(y_pre)
+			y = le.transform(y_pre)
+			plt.figure()
+			plt.scatter(var_iso[:,0], var_iso[:,1], c=np.array(y_pre))
+			plt.title('Predictions sur set d\'entrainement - Isomap')
+			plt.show()
 
 		return None
