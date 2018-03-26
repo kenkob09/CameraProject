@@ -6,6 +6,7 @@ except:
     pass  #ceci pour ne pas avoir une erreur d'importation pour moi
 from sklearn.pipeline import Pipeline
 from sys import argv, path
+
 from data_manager import DataManager
 
 #L'idee c'est d'utiliser PCA, ensuite VarianceThreshold, comme explique dans la proposition du projet.
@@ -20,10 +21,10 @@ class Preprocess(BaseEstimator):
         return self.transformer.fit(X,y)
     
     def fit_transform(self, X, y=None):
-        return self.transformer.fit_transform(X)
+        return self.transformer.fit_transform(X,y)
 
     def transform(self, X, y=None):
-        return self.transformer.transform(X)
+        return self.transformer.transform(X,y)
 
 #Partie test :
 
