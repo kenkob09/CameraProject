@@ -19,7 +19,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
 
 from visualisation import Visualisation # groupe visu module
-from preprocessing import Preprocessing
+from preprocessing import Preprocess
 
 class model:
     def __init__(self):
@@ -77,7 +77,7 @@ class model:
 
         # VISUALISATION
         visu = Visualisation()
-        visu.plot(self.model, (X, Y), self.predict(X))
+        visu.plot(self.mod, (X, y), self.convert_to_num(self.predict(X), verbose=False))
 
     def predict(self, X):
         '''

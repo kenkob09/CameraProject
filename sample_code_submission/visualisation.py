@@ -20,7 +20,10 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.manifold import TSNE, Isomap
 from sklearn import preprocessing
 
-VISUALISATION_ON = False # active ou désactive la visualisation
+import random as rand
+import copy
+
+VISUALISATION_ON = True # active ou désactive la visualisation
 
 class Visualisation(object):
 
@@ -46,10 +49,29 @@ class Visualisation(object):
 		global VISUALISATION_ON
 
 		if (VISUALISATION_ON):
+			
+			idxChoisis = []
+			x = []
+			y = []
+			y_pre = []
+			nbDonnees = 2000
 
-			x = data[0]
-			y = data[1]
-			y_pre = predict
+			if (len(data[0]) > 2000):
+				# N'afficher que 2000 données maximum
+				for i in range(nbDonnees):
+					hasard = rand.randint(0, len(data[0]) - 1)
+					while (hasard in idxChoisis):
+						hasard = rand.randint(0, len(data[0]) - 1)
+
+					idxChoisis.append(hasard)
+					x.append(data[0][hasard])
+					y.append(data[1][hasard])
+					y_pre.append(predict[hasard])
+			else:
+				x = data[0]
+				y = data[1]
+				y_pre = predict
+
 
 			print("TSNE dimension reduction plot")
 
