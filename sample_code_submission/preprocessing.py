@@ -3,19 +3,19 @@ from sklearn.decomposition import PCA
 try:
     from sklearn.feature_selection import VarianceThreshold
 except:
-    pass  #ceci pour ne pas avoir une erreur d'importation pour moi
+    pass  #ceci pour ne pas avoir une erreur d'importation 
 from sklearn.pipeline import Pipeline
 from sys import argv, path
 
 from data_manager import DataManager
 
-#L'idee c'est d'utiliser PCA, ensuite VarianceThreshold, comme explique dans la proposition du projet.
+#L'idee c'est d'utiliser VarianceThreshold, ensuite PCA, comme explique dans la proposition du projet.
 
 class Preprocess(BaseEstimator):
     def __init__(self):
         pca_boi = PCA(n_components=2)
         filtering = VarianceThreshold(threshold = 4.0)
-        self.transformer = Pipeline([("first", pca_boi),("second", filtering)])
+        self.transformer = Pipeline([("first", filtering),("second", pca_boi)])
 
     def fit(self, X, y=None):
         return self.transformer.fit(X,y)
@@ -37,7 +37,7 @@ if __name__=="__main__":
         input_dir = argv[1]
         output_dir = argv[2];
     
-    basename = 'sample_data'
+    basename = 'cifar10_model'
     D = DataManager(basename, input_dir) # Load data
     print("*** Before my sexy preprocessing***")
     print D
@@ -49,4 +49,4 @@ if __name__=="__main__":
     D.data['X_test'] = Prepro.transform(D.data['X_test'])
   
     print("*** Look at these handsome results aye ***")
-    print D
+print D
