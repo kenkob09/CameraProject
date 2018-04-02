@@ -31,12 +31,12 @@ class model:
         self.num_feat=1
         self.num_labels=1
         self.is_trained=False
-        self.mod = GaussianNB()
+        self.mod = Pipeline["what", Preprocess(),("a pain",GaussianNB())]
 
     def define_model(self, name):
         if self.is_trained == False:
-            if name == 'GaussianNB':
-                self.mod = GaussianNB()
+            if name == 'preprocInc':
+                self.mod = Pipeline["what", Preprocess(),("a pain",GaussianNB())]
             else:
                 print('Error selecting the model, choose by default Gaussian NB')
                 self.mod = GaussianNB()
