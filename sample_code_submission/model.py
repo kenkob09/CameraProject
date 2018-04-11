@@ -31,6 +31,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 
+from sklearn.ensemble import GradientBoostingClassifier as GBC
+
 class model:
     def __init__(self):
         '''
@@ -42,16 +44,19 @@ class model:
         self.num_labels=1
         self.is_trained=False
         #self.mod = MultinomialNB()
-        self.mod = Pipeline([('what', Preprocess()),('a pain',MultinomialNB(alpha=0.05, fit_prior=False, class_prior = None))])
+        
+	self.mod = GBC()
+	#self.mod = Pipeline([('what', Preprocess()),('a pain', MultinomialNB(alpha=0.05, fit_prior=False, class_prior = None))])
+	#self.mod = Pipeline([('what', Preprocess()), ('a pain', GaussianNB())])
 
     def define_model(self, name):
         if self.is_trained == False:
             if name == 'preprocInc':
                 #self.mod = MultinomialNB()
-                self.mod = Pipeline([('what', Preprocess()),('a pain',MultinomialNB(alpha=0.05, fit_prior=False, class_prior = None))])
+                self.mod = Pipeline([('what', Preprocess()),('a pain', MultinomialNB(alpha=0.05, fit_prior=False, class_prior = None))])
             else:
                 print('Error selecting the model, choose by default Gaussian NB')
-                self.mod = GaussianNB()
+                self.mod = MultinomialNB()
         else:
             print("Model already load")
 
@@ -221,7 +226,7 @@ class Predictor(BaseEstimator):
     models, for which you choose the hyper-parameters.'''
     def __init__(self):
         '''This method initializes the predictor.'''
-        self.mod = MultinomialNB()
+        self.mod = GaussianNB()
         print("PREDICTOR=" + self.mod.__str__())
 
     def fit(self, X, y):

@@ -88,7 +88,7 @@ save_previous_results = False
 # If no arguments to run.py are provided, this is where the data will be found
 # and the results written to. Change the root_dir to your local directory.
 root_dir = "../"
-default_input_dir = root_dir + "sample_data"
+default_input_dir = root_dir + "public_data"
 default_output_dir = root_dir + "sample_result_submission"
 default_program_dir = root_dir + "ingestion_program"
 default_submission_dir = root_dir + "sample_code_submission"
@@ -218,7 +218,7 @@ if __name__=="__main__" and debug_mode<4:
             vprint( verbose,  "[+] Fitting success, time spent so far %5.2f sec" % (time.time() - start))
             # Save model
             # ----------
-            if save_model:
+            if False:
                 outname = os.path.join(submission_dir, basename)
                 vprint( verbose, "======== Saving model to: " + output_dir)
                 M.save(outname)
