@@ -23,7 +23,7 @@ from sklearn import preprocessing
 import random as rand
 import copy
 
-VISUALISATION_ON = True # active ou désactive la visualisation
+VISUALISATION_ON = False # active ou désactive la visualisation
 
 class Visualisation(object):
 
